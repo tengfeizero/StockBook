@@ -1,0 +1,38 @@
+# 运行时数据与授权（绝不入库）
+data/
+server/data/
+server/tmp/
+*.db
+*.db-shm
+*.db-wal
+*.db.bak*
+license.key
+.jwt_secret
+*.log
+
+# 构建产物
+release/
+*.exe
+server/internal/webembed/webdist/*
+!server/internal/webembed/webdist/.gitkeep
+
+# Node
+node_modules/
+web/dist/
+*.tsbuildinfo
+npm-debug.log*
+
+# 环境变量（示例文件除外）
+.env
+.env.*
+!.env.example
+
+# IDE / 系统
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+.DS_Store
+
+# 项目本地协作记录（AI 工作日志、内部笔记，不公开）
+.workbuddy/

@@ -1,0 +1,32 @@
+name: 功能建议
+description: 提出一个新功能或改进
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        本项目优先保证「单文件可部署、门店能用」。请说明场景与收益，而不是只给方案。
+  - type: textarea
+    id: scene
+    attributes:
+      label: 使用场景
+      description: 谁在什么情况下遇到什么问题？现在怎么绕过的？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 期望的做法
+      description: 你希望系统怎么处理？如有界面草图或类似产品参考可附上
+  - type: textarea
+    id: scope
+    attributes:
+      label: 影响面
+      description: 是否会改动表结构、单据状态机、打印版式？是否需要数据迁移？
+  - type: checkboxes
+    id: willing
+    attributes:
+      label: 参与意愿
+      options:
+        - label: 我可以提交 PR 实现
+        - label: 我可以协助测试

@@ -1,0 +1,18 @@
+# 跨平台换行与二进制处理
+* text=auto
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh text eol=lf
+Makefile text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+
+*.svg text

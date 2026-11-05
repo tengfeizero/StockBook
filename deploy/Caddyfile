@@ -1,0 +1,58 @@
+# 云进销存 HTTPS 反向代理（Caddy 2）
+#
+# 用法：
+#   1) 域名 A 记录指向本机公网 IP，放行 80/443
+#   2) 把 jxc.exe 起在本机 127.0.0.1:8080（只对本机开放，别用 0.0.0.0）
+#   3) 改下面第一行的域名，然后 `caddy run --config Caddyfile`
+#      （生产用 `caddy start --config Caddyfile`，或注册为系统服务）
+#
+# 证书由 Caddy 自动向 Let's Encrypt 申请并自动续期，无需 certbot / 定时任务。
+
+jxc.example.com {
+	encode zstd gzip
+
+	# 反向代理到应用；Caddy 自动补 X-Forwarded-For / -Proto / -Host，
+	# 应用侧 JXC_TRUSTED_PROXIES 默认信任 127.0.0.1，操作日志即记录真实客户端 IP
+	reverse_proxy 127.0.0.1:8080
+
+	# 接口响应不缓存（避免中间层缓存登录态/报表）；静态资源由应用自身下发
+	# 长缓存头（/assets/* immutable、index.html no-cache），这里不覆盖
+	@api path /api/*
+	header @api Cache-Control "no-store"
+
+	# 访问日志（磁盘紧张可注释掉；默认走 stdout 交给 journald 也可）
+	log {
+		output file /var/log/caddy/jxc-access.log {
+			roll_size 20MiB
+			roll_keep 5
+		}
+		format console
+	}
+}
+
+# ---------------------------------------------------------------------------
+# 内网 / 无公网域名场景（自签证书，浏览器首次访问会提示不受信任，需手动信任）
+# 注意：IP 地址无法申请公有证书，内网只能自签或用公司内部 CA
+# ---------------------------------------------------------------------------
+# https://192.168.1.10 {
+# 	tls internal
+# 	reverse_proxy 127.0.0.1:8080
+# }
+
+# ---------------------------------------------------------------------------
+# 已经有 Nginx 在跑（复用 80/443，由 Nginx 分发）时，用这段反代到 Caddy 或直接到应用
+# ---------------------------------------------------------------------------
+# server {
+# 	listen 443 ssl http2;
+# 	server_name jxc.example.com;
+# 	ssl_certificate     /etc/letsencrypt/live/jxc.example.com/fullchain.pem;
+# 	ssl_certificate_key /etc/letsencrypt/live/jxc.example.com/privkey.pem;
+# 	client_max_body_size 50m;          # 批量导入 Excel
+# 	location / {
+# 		proxy_pass http://127.0.0.1:8080;
+# 		proxy_set_header Host              $host;
+# 		proxy_set_header X-Real-IP         $remote_addr;
+# 		proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+# 		proxy_set_header X-Forwarded-Proto $scheme;
+# 	}
+# }

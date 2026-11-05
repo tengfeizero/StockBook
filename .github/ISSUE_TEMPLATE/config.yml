@@ -1,0 +1,27 @@
+name: 配置问题
+description: 安装、部署、升级、数据迁移遇到问题
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        部署问题请先看 [README 的部署章节](../../blob/main/README.md) 与 [docs/用户手册.md](../../blob/main/docs/用户手册.md)。
+  - type: textarea
+    id: goal
+    attributes:
+      label: 想达成什么
+      placeholder: 例如「把数据从旧机器迁到新机器」「用 Caddy 加 HTTPS」
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: 已尝试的操作与报错
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 环境
+      description: 操作系统、版本、部署方式、浏览器
