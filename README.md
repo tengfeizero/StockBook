@@ -158,6 +158,7 @@ go run ./cmd/genlicense -owner "某某商贸" -days 365 -code XXXX-XXXX-XXXX-XXX
 ## 文档
 
 - [用户手册](docs/用户手册.md) —— 面向店员的 11 个场景 + 常见问题，可打印
+- [与 AI 协作开发流程](docs/AI协作开发流程.md) —— 本项目是怎么被 AI 协作做出来的，可复用到其他项目
 - [PRD](docs/PRD.md) · [数据模型](docs/DATA-MODEL.md) · [API](docs/API.md) · [开发约定](docs/CONVENTIONS.md)
 - [变更日志](docs/CHANGELOG.md) · [路线图与待办](docs/TODO.md)
 - 系统内 `/help` 有同源的使用手册页，首次登录会自动播放新手引导
