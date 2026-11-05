@@ -4,7 +4,7 @@
 - 新增 **`AGENTS.md`**：面向任意 AI 编码代理（Claude Code / Cursor / Codex / WorkBuddy）的入口约定——必读顺序、环境与命令表、10 条不能破的规则（含 `go:embed` 编译期嵌入、service 层归属、金额分/数量×1000、`s.db(ctx)` 租户隔离、批量 Create 陷阱、唯一索引 tag）、禁区（不提交 data/license.key/.jwt_secret、不动授权公钥）、每轮迭代的收尾三件事、以及"已知未验证项"
 - 新增 **`docs/项目现状.md`**：仓库内的「当前状态」权威快照——版本与可交付状态、目录地图、10 条关键设计决策（为什么这么定）、9 条伪装成 bug 的坑、数据与密钥在哪 / 新机器怎么办、待办。替代此前只存在于本地 `.workbuddy/`（不入库）的迭代记忆
 - 新增 **`scripts/verify.sh`**：一条命令跑完工具链检查 → 依赖（缺 `node_modules` 自动 `npm ci`）→ gofmt → `go vet` → `go test` → `vue-tsc -b`，`--build` 追加完整构建，失败项汇总并以非 0 退出；`Makefile` 增加 `make verify` / `make setup`
-- `README` 新增「新机器接手（换电脑 / 换 AI 代理）」章节：clone 后的三步验证、仓库里**没有**哪些东西（`data/`、`license.key`、`.jwt_secret`）、授权私钥不随仓库传递；文档索引补充 AGENTS.md 与项目现状
+- `README` 新增「新机器接手（换电脑 / 换 AI 代理）」章节：clone 后的三步验证、仓库里**没有**哪些东西（`data/`、`license.key`、`.jwt_secret`）、授权私钥不随仓库传递，以及**可直接复制给新 AI 代理的开工提示词**；文档索引补充 AGENTS.md 与项目现状
 - `CONTRIBUTING.md` 提交前自检改用 `scripts/verify.sh`
 - 实测：本机 `bash scripts/verify.sh` 全绿（go 1.27.3 / node 22.22.2）；另将仓库 clone 到空目录，从零 `npm ci` + 自检 + 构建 + 启动 + 登录 + 载入演示数据跑通，验证"换台机器拉下来即可迭代"
 

@@ -105,6 +105,18 @@ bash scripts/verify.sh --build  # 再加一步：完整构建 release/jxc.exe
 - **仓库里没有的东西**（都在 `.gitignore` 里，需另行准备）：`data/`（首次启动自动建库，`admin/admin123`）、`license.key`（授权）、`.jwt_secret`（自动生成）。样本数据用登录页「选个行业一键体验」或 `POST /api/v1/demo/init` 载入，不需要拷数据库。
 - **授权私钥不随仓库传递**：需要签发授权时向项目所有者索取（通过密码管理器，不要走 issue/PR/聊天记录）。
 
+### 交给新 AI 代理的第一句话
+
+把下面这段直接粘给新代理（Claude Code / Cursor / Codex / WorkBuddy 都适用），它会先摸清现状再动手，而不是上来就改代码：
+
+```text
+先读 AGENTS.md 和 docs/项目现状.md，再读 docs/TODO.md 顶部。
+跑 bash scripts/verify.sh 确认基线是绿的，然后用一句话告诉我当前状态和你要做的第一件事，
+等我确认后再改代码。一次只改一个关注点。
+```
+
+要它直接开工某个待办项，把最后一句换成「然后实现 docs/TODO.md 里的 XXX，改完跑 scripts/verify.sh 并更新 CHANGELOG 与项目现状」。
+
 ## 部署
 
 **Windows 开机自启**（管理员 CMD，exe 所在目录）：
