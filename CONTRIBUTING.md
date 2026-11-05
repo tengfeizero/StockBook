@@ -25,6 +25,13 @@ cd web && npm install && npm run dev
 ## 提交前自检
 
 ```bash
+bash scripts/verify.sh          # 工具链 + 依赖 + gofmt + vet + test + vue-tsc
+bash scripts/verify.sh --build  # 再加完整构建
+```
+
+等价于手动执行：
+
+```bash
 cd server && gofmt -l . && go vet ./... && go test ./...
 cd web && npx vue-tsc -b && npm run build
 ```

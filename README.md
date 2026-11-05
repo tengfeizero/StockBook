@@ -90,6 +90,21 @@ docker build -t jxc . && docker run -d -p 8080:8080 -v jxc-data:/app/data jxc
 | `JXC_TRUSTED_PROXIES` | `127.0.0.1,::1` | 信任的反向代理地址（IP/CIDR，逗号分隔），`none` = 不信任任何代理 |
 | `JXC_HOME` | exe 所在目录 | Windows 服务模式下的数据根目录 |
 
+## 新机器接手（换电脑 / 换 AI 代理）
+
+clone 下来用**一条命令**确认基线是否可用：
+
+```bash
+git clone <repo> && cd JXC
+bash scripts/verify.sh          # 工具链 → 依赖(自动 npm ci) → gofmt → vet → test → vue-tsc
+bash scripts/verify.sh --build  # 再加一步：完整构建 release/jxc.exe
+```
+
+- **给 AI 编码代理**：先读 [AGENTS.md](AGENTS.md)。里面有硬规则（业务只写 service 层、金额用分、`go:embed` 改了要重编译、多租户必须带 ctx）、不能碰的禁区、以及每轮迭代的收尾清单。
+- **给接手的人**：[docs/项目现状.md](docs/项目现状.md) 是唯一的"当前状态"来源（做到哪、关键决策为什么这么定、踩过的坑、待办）；[docs/AI协作开发流程.md](docs/AI协作开发流程.md) 是这套协作方式的可复用版本。
+- **仓库里没有的东西**（都在 `.gitignore` 里，需另行准备）：`data/`（首次启动自动建库，`admin/admin123`）、`license.key`（授权）、`.jwt_secret`（自动生成）。样本数据用登录页「选个行业一键体验」或 `POST /api/v1/demo/init` 载入，不需要拷数据库。
+- **授权私钥不随仓库传递**：需要签发授权时向项目所有者索取（通过密码管理器，不要走 issue/PR/聊天记录）。
+
 ## 部署
 
 **Windows 开机自启**（管理员 CMD，exe 所在目录）：
@@ -157,6 +172,8 @@ go run ./cmd/genlicense -owner "某某商贸" -days 365 -code XXXX-XXXX-XXXX-XXX
 
 ## 文档
 
+- [项目现状](docs/项目现状.md) —— 冷启动先读这份：当前版本、关键设计决策、已知的坑、数据与密钥在哪
+- [AGENTS.md](AGENTS.md) —— 给 AI 编码代理的入口约定（硬规则/禁区/交付节奏）
 - [用户手册](docs/用户手册.md) —— 面向店员的 11 个场景 + 常见问题，可打印
 - [与 AI 协作开发流程](docs/AI协作开发流程.md) —— 本项目是怎么被 AI 协作做出来的，可复用到其他项目
 - [PRD](docs/PRD.md) · [数据模型](docs/DATA-MODEL.md) · [API](docs/API.md) · [开发约定](docs/CONVENTIONS.md)
