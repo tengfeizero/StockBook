@@ -35,16 +35,13 @@
 | 产品化 | 单文件部署、Ed25519 机器码授权（30 天试用、过期只读）、Caddy 反代 HTTPS、Windows 服务开机自启（原生 `-install`） |
 | 多租户（可选） | 企业注册开户 + 订阅计费、JWT 携带租户、全表自动隔离、按套餐限制用户数；不启用时就是单机版 |
 
-<table>
-<tr>
-<td width="50%"><img src="docs/images/locations.png" alt="库位容量与预警"></td>
-<td width="50%"><img src="docs/images/inventory.png" alt="库存查询"></td>
-</tr>
-<tr>
-<td><img src="docs/images/ticket.png" alt="58mm 小票"></td>
-<td><img src="docs/images/help.png" alt="内置使用手册"></td>
-</tr>
-</table>
+| 库位容量与预警 | 库存查询 |
+|:---:|:---:|
+| ![库位容量与预警](docs/images/locations.png) | ![库存查询](docs/images/inventory.png) |
+
+| 58mm 小票 | 内置使用手册 |
+|:---:|:---:|
+| ![58mm 小票](docs/images/ticket.png) | ![内置使用手册](docs/images/help.png) |
 
 ## 快速开始
 
@@ -61,6 +58,8 @@ cd web && npm install && npm run dev
 打开 <http://localhost:5173>，账号 `admin / admin123`（登录后请立即改密）。
 
 登录页的「选个行业一键体验」可以载入 **五金建材 / 便利店 / 生鲜果蔬 / 快消批发** 四套演示数据，各含近两个月的自洽单据（库存、成本、应收应付、报表全部对得上），不用手工建档就能把流程点一遍。
+
+![登录页：选个行业一键体验](docs/images/login.png)
 
 ### 方式二：构建单文件
 
