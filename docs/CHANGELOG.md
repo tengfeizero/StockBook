@@ -1,5 +1,12 @@
 # 变更日志
 
+## v0.28.0 — 2026-11-05（首次开源发布：仓库上线）
+- **仓库上线**：<https://github.com/tengfeizero/StockBook>（main 分支，MIT）。本地 `origin` 已配置，后续 `git push` 直接可推；旧提交历史已重整，备份 bundle 保留在仓库外
+- **CI 首次运行全绿**：Go 后端（gofmt → vet → test → 编译）与 Vue 前端（npm ci → vue-tsc → build）两个 job 均 success，说明干净 runner 上从零可构建
+- **入库安全自查**：`git ls-files` 扫描确认 `data/`、`*.db`、`license.key`、`.jwt_secret`、签名私钥均未进版本库（共 152 个文件入库）
+- README 修正：「新机器接手」的克隆命令由占位符 `<repo>` 改为真实地址，顶部补仓库徽章
+- `docs/项目现状.md` / `docs/TODO.md` 同步：推送项勾选、备份 bundle 路径更正
+
 ## v0.27.0 — 2026-11-05（更名：云进销存 JXC → 货本 StockBook）
 - **产品更名**：`云进销存 / JXC` → **货本 StockBook**，一句话定位「一个 exe，一本货账」。取「一本账」之意，与云 SaaS 划清界限（数据在自己硬盘上、拷走即迁移），同时谐音「课本」呼应内置手册与新手引导
 - 更名对照：二进制 `jxc.exe` → `huoben.exe`；默认库 `data/jxc.db` → `data/huoben.db`；日志 `data/logs/jxc-*.log` → `huoben-*.log`；环境变量前缀 `JXC_` → `HUOBEN_`；Windows 服务名 `JXC` → `HUOBEN`（显示名「货本」）；Linux 单元 `deploy/jxc.service` → `deploy/huoben.service`（安装目录 `/opt/huoben`）；Docker 镜像/容器/数据卷 `jxc*` → `huoben*`；示例子域名 `jxc.example.com` → `huoben.example.com`；GORM 插件标识 `jxc:tenant*` → `huoben:tenant*`

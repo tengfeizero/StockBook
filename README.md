@@ -2,6 +2,7 @@
 
 > 一个 exe，一本货账。
 
+[![GitHub](https://img.shields.io/badge/GitHub-tengfeizero%2FStockBook-181717?logo=github)](https://github.com/tengfeizero/StockBook)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Go](https://img.shields.io/badge/Go-1.27%2B-00ADD8?logo=go&logoColor=white)](server/go.mod)
 [![Vue 3](https://img.shields.io/badge/Vue-3-42b883?logo=vue.js&logoColor=white)](web/package.json)
@@ -97,7 +98,7 @@ docker build -t huoben . && docker run -d -p 8080:8080 -v huoben-data:/app/data 
 clone 下来用**一条命令**确认基线是否可用：
 
 ```bash
-git clone <repo> && cd HUOBEN
+git clone https://github.com/tengfeizero/StockBook.git && cd StockBook
 bash scripts/verify.sh          # 工具链 → 依赖(自动 npm ci) → gofmt → vet → test → vue-tsc
 bash scripts/verify.sh --build  # 再加一步：完整构建 release/huoben.exe
 ```

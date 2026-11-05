@@ -20,7 +20,7 @@
 - [x] 源码 clone 可编译（webdist 占位 + 未构建提示页）；.gitignore 重写（data/license.key/.workbuddy 不入库）
 - [x] 开源配套：MIT LICENSE / CONTRIBUTING / SECURITY / 行为准则 / issue+PR 模板 / CI / Docker / Makefile
 - [x] README 开源化 + docs/images 6 张截图
-- [ ] 推送到 GitHub（待创建仓库后 git push；历史将重整为单个初始提交，旧历史备份于 HUOBEN-history-20261105.bundle）
+- [x] 推送到 GitHub：https://github.com/tengfeizero/StockBook （2026-11-05，main 分支，CI 已触发；旧历史备份 `JXC-history-20261105.bundle` 保留在仓库外）
 - [ ] 正式发布演练：干净机器跑 release/huoben.exe + 签发真实客户授权 + 管理员验证 -install 与重启自启
 
 ## v0.24 用户手册 + 新手引导 ✅（2026-11-05）
