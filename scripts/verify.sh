@@ -72,6 +72,11 @@ if [ -z "$UNFMT" ]; then
   ok "格式统一"
 else
   bad "以下文件未格式化（cd server && gofmt -w .）："; echo "$UNFMT" | indent
+  # 全都报未格式化 = 换行被转成了 CRLF（Windows 上 core.autocrlf=true 的典型症状），不是真的没格式化
+  if [ "$(echo "$UNFMT" | wc -l)" -gt 20 ]; then
+    warn "报错文件数异常多：大概率是检出时换行变成 CRLF。检查 .gitattributes 是否有 '*.go text eol=lf'，"
+    warn "可执行：git config core.autocrlf false && git rm --cached -r . >/dev/null && git reset --hard"
+  fi
 fi
 
 # ---------- 4. go vet ----------

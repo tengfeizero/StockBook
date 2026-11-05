@@ -1,10 +1,26 @@
 # 跨平台换行与二进制处理
+# 注意：Go 源码必须是 LF，否则 gofmt -l 会把每个文件都判为"未格式化"（Windows 上 core.autocrlf=true 时尤其明显）
 * text=auto
 
-*.bat text eol=crlf
-*.cmd text eol=crlf
+*.go text eol=lf
+*.mod text eol=lf
+*.sum text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.vue text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
 *.sh text eol=lf
 Makefile text eol=lf
+Dockerfile text eol=lf
+
+# Windows 脚本必须 CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
 
 *.png binary
 *.jpg binary
