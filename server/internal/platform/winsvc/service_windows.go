@@ -17,9 +17,9 @@ import (
 
 const (
 	// ServiceName 是注册到 SCM 的内部名（services.msc 里显示 DisplayName）
-	ServiceName = "JXC"
-	DisplayName = "云进销存"
-	Description = "云进销存 Web 服务（默认端口 8080）。数据保存在程序目录下的 data 子目录。"
+	ServiceName = "HUOBEN"
+	DisplayName = "货本"
+	Description = "货本 Web 服务（默认端口 8080）。数据保存在程序目录下的 data 子目录。"
 )
 
 // IsService 判断当前进程是否由 Windows 服务控制管理器启动。
@@ -164,7 +164,7 @@ func Status() (string, error) {
 
 	s, err := m.OpenService(ServiceName)
 	if err != nil {
-		return fmt.Sprintf("服务 %s 未安装（可用 jxc.exe -install 注册）", ServiceName), nil
+		return fmt.Sprintf("服务 %s 未安装（可用 huoben.exe -install 注册）", ServiceName), nil
 	}
 	defer s.Close()
 

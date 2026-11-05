@@ -74,7 +74,8 @@ async function initDemo() {
 <template>
   <div class="login-page">
     <el-card class="login-card">
-      <h2>云进销存</h2>
+      <h2>货本</h2>
+      <p class="tagline">一个 exe，一本货账</p>
       <el-form @submit.prevent="submit">
         <el-form-item>
           <el-input v-model="form.tenantCode" placeholder="企业编码（单机版留空）" size="large" clearable />
@@ -123,6 +124,12 @@ async function initDemo() {
 h2 {
   margin-bottom: 24px;
   font-weight: 600;
+}
+.tagline {
+  margin: -16px 0 20px;
+  font-size: 13px;
+  color: var(--el-text-color-secondary);
+  letter-spacing: 1px;
 }
 .register-row {
   margin-top: 12px;

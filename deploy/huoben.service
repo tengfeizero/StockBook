@@ -1,24 +1,24 @@
 [Unit]
-Description=JXC 云进销存
-Documentation=https://github.com/your-org/jxc
+Description=货本 StockBook 进销存服务
+Documentation=https://github.com/your-org/huoben
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
 # 应用只监听回环地址，对外由 Caddy 终结 TLS 后转发过来
-WorkingDirectory=/opt/jxc
-Environment=JXC_PORT=8080
-Environment=JXC_DB_PATH=data/jxc.db
+WorkingDirectory=/opt/huoben
+Environment=HUOBEN_PORT=8080
+Environment=HUOBEN_DB_PATH=data/huoben.db
 # 务必改掉默认密钥（生成: openssl rand -hex 32）；改后已登录的令牌失效需重新登录
-Environment=JXC_JWT_SECRET=CHANGE_ME_openssl_rand_hex_32
+Environment=HUOBEN_JWT_SECRET=CHANGE_ME_openssl_rand_hex_32
 # 反向代理与应用同机，默认 127.0.0.1 即可；代理在容器/别机时填它的地址
-Environment=JXC_TRUSTED_PROXIES=127.0.0.1,::1
-ExecStart=/opt/jxc/jxc
+Environment=HUOBEN_TRUSTED_PROXIES=127.0.0.1,::1
+ExecStart=/opt/huoben/huoben
 Restart=always
 RestartSec=3
 # 数据目录需要写权限（SQLite + 自动备份）
-ReadWritePaths=/opt/jxc/data
+ReadWritePaths=/opt/huoben/data
 
 # 基础加固
 NoNewPrivileges=true

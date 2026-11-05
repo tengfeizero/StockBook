@@ -1,6 +1,6 @@
 # 贡献指南
 
-感谢你愿意改进 JXC。这是一个**单文件部署的小微商户进销存系统**，代码以「业务规则集中在 service 层」为组织原则，改动前建议先读 [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md) 与 [`docs/DATA-MODEL.md`](docs/DATA-MODEL.md)。
+感谢你愿意改进 HUOBEN。这是一个**单文件部署的小微商户进销存系统**，代码以「业务规则集中在 service 层」为组织原则，改动前建议先读 [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md) 与 [`docs/DATA-MODEL.md`](docs/DATA-MODEL.md)。
 
 ## 环境要求
 
@@ -56,7 +56,7 @@ CI 会重复执行以上命令，本地先跑一遍能省一次往返。
 
 ## 不要提交
 
-`data/`、`*.db`、`license.key`、`.jwt_secret`、`.env`、`release/`、`node_modules/` 均已在 `.gitignore` 中。授权私钥**永远不要**写进代码或提交历史——签发工具从环境变量 `JXC_LICENSE_KEY` 读取。
+`data/`、`*.db`、`license.key`、`.jwt_secret`、`.env`、`release/`、`node_modules/` 均已在 `.gitignore` 中。授权私钥**永远不要**写进代码或提交历史——签发工具从环境变量 `HUOBEN_LICENSE_KEY` 读取。
 
 ## 报告问题
 

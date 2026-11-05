@@ -436,7 +436,7 @@ func (s *SystemService) Backup(ctx context.Context) (*BackupFile, error) {
 	if err := os.MkdirAll(backupDir(), 0755); err != nil {
 		return nil, err
 	}
-	name := "jxc-" + time.Now().Format("20060102-150405") + ".db"
+	name := "huoben-" + time.Now().Format("20060102-150405") + ".db"
 	target := filepath.Join(backupDir(), name)
 	if err := s.db(ctx).Exec("VACUUM INTO ?", target).Error; err != nil {
 		return nil, errcode.New(5000, "备份失败: "+err.Error())
@@ -450,7 +450,7 @@ func (s *SystemService) Backup(ctx context.Context) (*BackupFile, error) {
 
 // AutoBackup 每天首次启动时自动备份一次
 func (s *SystemService) AutoBackup(ctx context.Context) {
-	today := "jxc-" + time.Now().Format("20060102")
+	today := "huoben-" + time.Now().Format("20060102")
 	entries, _ := os.ReadDir(backupDir())
 	for _, e := range entries {
 		if strings.HasPrefix(e.Name(), today) {

@@ -33,7 +33,7 @@ func TenantFrom(ctx context.Context) (int64, bool) {
 // TenantPlugin GORM 插件：按 Statement.Context 自动做租户隔离
 type TenantPlugin struct{}
 
-func (TenantPlugin) Name() string { return "jxc:tenant" }
+func (TenantPlugin) Name() string { return "huoben:tenant" }
 
 func (p TenantPlugin) Initialize(db *gorm.DB) error {
 	hasField := func(tx *gorm.DB) bool {
@@ -84,8 +84,8 @@ func (p TenantPlugin) Initialize(db *gorm.DB) error {
 		name string
 		fn   func(*gorm.DB)
 	}{
-		{"jxc:tenant_fill", fill},
-		{"jxc:tenant_scope_query", scope},
+		{"huoben:tenant_fill", fill},
+		{"huoben:tenant_scope_query", scope},
 	} {
 		if err := db.Callback().Create().Before("gorm:create").Register(cb.name+"_create", cb.fn); err != nil {
 			return err

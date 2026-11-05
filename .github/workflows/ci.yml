@@ -34,7 +34,7 @@ jobs:
         run: go test ./...
 
       - name: 编译
-        run: go build -ldflags "-s -w" -o /tmp/jxc ./cmd
+        run: go build -ldflags "-s -w" -o /tmp/huoben ./cmd
 
   web:
     name: Vue 前端

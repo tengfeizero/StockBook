@@ -37,7 +37,7 @@ body:
       label: 部署方式
       options:
         - Windows 单文件（双击运行）
-        - Windows 服务（jxc.exe -install）
+        - Windows 服务（huoben.exe -install）
         - Linux + systemd
         - Docker
         - 源码开发模式（go run + npm run dev）

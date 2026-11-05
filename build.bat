@@ -15,13 +15,13 @@ type nul > server\internal\webembed\webdist\.gitkeep
 
 echo [3/3] 编译单文件后端...
 cd server
-go build -ldflags "-s -w" -o ..\release\jxc.exe ./cmd || goto :err
+go build -ldflags "-s -w" -o ..\release\huoben.exe ./cmd || goto :err
 cd ..
 
 echo.
-echo 构建完成: release\jxc.exe
-echo 部署: 把 jxc.exe 放到任意空目录运行，浏览器访问 http://localhost:8080
-echo 开机自启(管理员): jxc.exe -install  查看状态: jxc.exe -status  卸载: jxc.exe -uninstall
+echo 构建完成: release\huoben.exe
+echo 部署: 把 huoben.exe 放到任意空目录运行，浏览器访问 http://localhost:8080
+echo 开机自启(管理员): huoben.exe -install  查看状态: huoben.exe -status  卸载: huoben.exe -uninstall
 goto :eof
 
 :err

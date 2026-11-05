@@ -1,18 +1,18 @@
 services:
-  jxc:
+  huoben:
     build: .
-    image: jxc:latest
-    container_name: jxc
+    image: huoben:latest
+    container_name: huoben
     restart: unless-stopped
     ports:
       - "127.0.0.1:8080:8080"   # 只对宿主回环开放，公网访问请由 Caddy/Nginx 反代
     volumes:
-      - jxc-data:/app/data
+      - huoben-data:/app/data
     environment:
       TZ: Asia/Shanghai
       # 多实例部署时必须显式设置并保持一致；单实例留空会自动生成到数据卷
-      # JXC_JWT_SECRET: "请替换为随机字符串"
-      JXC_TRUSTED_PROXIES: "127.0.0.1,::1"
+      # HUOBEN_JWT_SECRET: "请替换为随机字符串"
+      HUOBEN_TRUSTED_PROXIES: "127.0.0.1,::1"
 
 volumes:
-  jxc-data:
+  huoben-data:

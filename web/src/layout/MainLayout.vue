@@ -100,7 +100,7 @@ function handleLogout() {
     <el-aside width="208px">
       <div class="logo">
         <el-icon :size="20" color="var(--el-color-primary)"><Store /></el-icon>
-        <span>云进销存</span>
+        <span>货本</span>
       </div>
       <el-menu router :default-active="router.currentRoute.value.path" class="menu" data-guide="menu">
         <el-menu-item v-for="m in topMenus" :key="m.path" :index="m.path" :data-guide="m.path === '/reports' ? 'reports' : undefined">

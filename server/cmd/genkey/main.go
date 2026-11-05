@@ -7,7 +7,7 @@
 // 输出两行 base64：
 //   - 公钥写入 internal/pkg/license/license.go 的 PublicKey（随产品分发，可公开）
 //   - 私钥仅自己保管，签发授权时通过环境变量提供：
-//     export JXC_LICENSE_KEY='<私钥base64>'
+//     export HUOBEN_LICENSE_KEY='<私钥base64>'
 //
 // 注意：更换密钥后，此前签发的所有 license.key 立即失效，需要重新签发并发布新版程序。
 package main
@@ -29,5 +29,5 @@ func main() {
 	fmt.Println("PRIVATE_KEY=" + base64.StdEncoding.EncodeToString(priv))
 	fmt.Println()
 	fmt.Println("把 PUBLIC_KEY 填入 internal/pkg/license/license.go 的 PublicKey；")
-	fmt.Println("PRIVATE_KEY 只保存在自己手里，签发时用环境变量 JXC_LICENSE_KEY 传入。")
+	fmt.Println("PRIVATE_KEY 只保存在自己手里，签发时用环境变量 HUOBEN_LICENSE_KEY 传入。")
 }

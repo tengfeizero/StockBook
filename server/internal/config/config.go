@@ -15,26 +15,26 @@ type Config struct {
 	JWTSecret string
 	// TrustedProxies 允许携带 X-Forwarded-For / X-Forwarded-Proto 的代理地址（IP 或 CIDR）。
 	// 反向代理（Caddy/Nginx）与应用同机部署时保持默认回环地址即可；代理在别的机器或
-	// 容器内时用 JXC_TRUSTED_PROXIES 追加，例如 "127.0.0.1,172.17.0.1"。
+	// 容器内时用 HUOBEN_TRUSTED_PROXIES 追加，例如 "127.0.0.1,172.17.0.1"。
 	// 设为 "none" 表示不信任任何代理（客户端 IP 一律取 TCP 对端）。
 	TrustedProxies []string
 }
 
 func Load() *Config {
-	dbPath := getEnv("JXC_DB_PATH", "data/jxc.db")
+	dbPath := getEnv("HUOBEN_DB_PATH", "data/huoben.db")
 	return &Config{
-		Port:           getEnv("JXC_PORT", "8080"),
+		Port:           getEnv("HUOBEN_PORT", "8080"),
 		DBPath:         dbPath,
 		JWTSecret:      LoadJWTSecret(dbPath),
-		TrustedProxies: ParseProxies(getEnv("JXC_TRUSTED_PROXIES", "127.0.0.1,::1")),
+		TrustedProxies: ParseProxies(getEnv("HUOBEN_TRUSTED_PROXIES", "127.0.0.1,::1")),
 	}
 }
 
 // LoadJWTSecret 取 JWT 签名密钥，优先级：环境变量 > 数据目录下的 .jwt_secret > 新生成。
 // 生成后落盘到数据库同目录（权限 0600），重启不会让已登录用户掉线；
-// 多实例部署请统一用 JXC_JWT_SECRET，否则各实例签发的令牌互不认。
+// 多实例部署请统一用 HUOBEN_JWT_SECRET，否则各实例签发的令牌互不认。
 func LoadJWTSecret(dbPath string) string {
-	if v := strings.TrimSpace(os.Getenv("JXC_JWT_SECRET")); v != "" {
+	if v := strings.TrimSpace(os.Getenv("HUOBEN_JWT_SECRET")); v != "" {
 		return v
 	}
 	dir := filepath.Dir(dbPath)
@@ -50,8 +50,8 @@ func LoadJWTSecret(dbPath string) string {
 	buf := make([]byte, 32)
 	if _, err := rand.Read(buf); err != nil {
 		// 极端情况下退回固定值并告警：能用但令牌可预测，必须让运维看到
-		log.Printf("警告: 生成随机 JWT 密钥失败（%v），已退回临时密钥，请显式设置 JXC_JWT_SECRET", err)
-		return "insecure-fallback-please-set-JXC_JWT_SECRET"
+		log.Printf("警告: 生成随机 JWT 密钥失败（%v），已退回临时密钥，请显式设置 HUOBEN_JWT_SECRET", err)
+		return "insecure-fallback-please-set-HUOBEN_JWT_SECRET"
 	}
 	secret := hex.EncodeToString(buf)
 	if err := os.MkdirAll(dir, 0o755); err == nil {

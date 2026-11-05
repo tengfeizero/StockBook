@@ -18,13 +18,13 @@ import (
 )
 
 // PublicKey 产品签名公钥（base64），随二进制分发，可公开。
-// 私钥不进仓库：签发时由 cmd/genlicense 从环境变量 JXC_LICENSE_KEY 读取；
+// 私钥不进仓库：签发时由 cmd/genlicense 从环境变量 HUOBEN_LICENSE_KEY 读取；
 // 自行部署/二次开发可用 `go run ./cmd/genkey` 生成自己的密钥对并替换本值。
 var PublicKey = "eHNKDvEgKSwmbgtSUDQRMdLHPmUVdI1b1H//kKh2eGI="
 
 const (
-	TrialDays   = 30    // 未授权时的试用期
-	ProductCode = "JXC" // 产品码
+	TrialDays   = 30       // 未授权时的试用期
+	ProductCode = "HUOBEN" // 产品码
 )
 
 // Info 授权文件内容（license.key）

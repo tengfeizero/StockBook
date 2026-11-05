@@ -1,6 +1,11 @@
 # TODO
 
-> 状态：**M0-M6 全部完成并实测通过**；v0.10 演示交付 + v0.11 条码秤码解析 + v0.12 库位数量账 + v0.13 按库位盘点/容量预警 + v0.14 58mm 小票打印 + v0.15 盘点差异表/复盘 + v0.16 盘点差异审批流 + v0.17 库位容量按体积/重量计 + v0.18 演示数据多行业模板 + v0.19 真正 SaaS 化 + v0.20 批发行业演示模板 + v0.21 打印模板可配置 + v0.22 HTTPS（Caddy 反向代理）+ v0.23 Windows 服务 + v0.24 用户手册与新手引导 + v0.25 开源准备 + v0.26 换机/换代理冷启动保障（2026-11-05）。产品可交付。
+> 状态：**M0-M6 全部完成并实测通过**；v0.10 演示交付 + v0.11 条码秤码解析 + v0.12 库位数量账 + v0.13 按库位盘点/容量预警 + v0.14 58mm 小票打印 + v0.15 盘点差异表/复盘 + v0.16 盘点差异审批流 + v0.17 库位容量按体积/重量计 + v0.18 演示数据多行业模板 + v0.19 真正 SaaS 化 + v0.20 批发行业演示模板 + v0.21 打印模板可配置 + v0.22 HTTPS（Caddy 反向代理）+ v0.23 Windows 服务 + v0.24 用户手册与新手引导 + v0.25 开源准备 + v0.26 换机/换代理冷启动保障 + v0.27 更名货本 StockBook（2026-11-05）。产品可交付。
+
+## v0.27 更名：货本 StockBook ✅（2026-11-05）
+- [x] 产品名、二进制 `huoben.exe`、库名 `huoben.db`、环境变量前缀 `HUOBEN_`、服务名 `HUOBEN`、Linux 单元/Docker/CI/文档全量更名
+- [x] 保留 Go module 路径 `jxc/server`（内部工程名，外部不可见）
+- [x] 登录页与侧边栏品牌文案 + 定位语「一个 exe，一本货账」
 
 ## v0.26 换机 / 换代理冷启动保障 ✅（2026-11-05）
 - [x] `AGENTS.md`：任意 AI 代理的入口约定（必读顺序、命令表、10 条硬规则、禁区、收尾清单、未验证项）
@@ -10,13 +15,13 @@
 - [x] 实测：clone 到空目录 → npm ci → 自检 → 构建 → 启动 → 登录 → 载入演示数据全通
 
 ## v0.25 开源准备 ✅（2026-11-05）
-- [x] 授权私钥移出代码（环境变量 JXC_LICENSE_KEY / -key-file），新增 cmd/genkey，公钥轮换并重签本机授权
+- [x] 授权私钥移出代码（环境变量 HUOBEN_LICENSE_KEY / -key-file），新增 cmd/genkey，公钥轮换并重签本机授权
 - [x] JWT 密钥自动生成持久化（.jwt_secret），消除默认弱密钥
 - [x] 源码 clone 可编译（webdist 占位 + 未构建提示页）；.gitignore 重写（data/license.key/.workbuddy 不入库）
 - [x] 开源配套：MIT LICENSE / CONTRIBUTING / SECURITY / 行为准则 / issue+PR 模板 / CI / Docker / Makefile
 - [x] README 开源化 + docs/images 6 张截图
-- [ ] 推送到 GitHub（待创建仓库后 git push；历史将重整为单个初始提交，旧历史备份于 JXC-history-20261105.bundle）
-- [ ] 正式发布演练：干净机器跑 release/jxc.exe + 签发真实客户授权 + 管理员验证 -install 与重启自启
+- [ ] 推送到 GitHub（待创建仓库后 git push；历史将重整为单个初始提交，旧历史备份于 HUOBEN-history-20261105.bundle）
+- [ ] 正式发布演练：干净机器跑 release/huoben.exe + 签发真实客户授权 + 管理员验证 -install 与重启自启
 
 ## v0.24 用户手册 + 新手引导 ✅（2026-11-05）
 - [x] 「使用手册」页 /help：11 场景章节 + 常见问题，目录吸顶联动，可打印；与 docs/用户手册.md 同源
@@ -25,21 +30,21 @@
 - [x] 实测：headless Edge 截图验证气泡定位、手册渲染、帮助菜单
 
 ## v0.23 Windows 服务（开机自启）✅（2026-11-05）
-- [x] `jxc.exe -install / -uninstall / -status`：注册开机自启服务（服务名 JXC），幂等重装，卸载保留 data
+- [x] `huoben.exe -install / -uninstall / -status`：注册开机自启服务（服务名 HUOBEN），幂等重装，卸载保留 data
 - [x] 崩溃自动重启 5s→10s→30s；一天无故障清零；非崩溃式失败同样生效
-- [x] 服务模式自动切回 exe 目录（否则 data 落到 System32），支持 `JXC_HOME` 覆盖
-- [x] 日志落盘 `data/logs/jxc-YYYY-MM-DD.log`，按天切分保留 14 天（服务无控制台，stdout 会丢）
+- [x] 服务模式自动切回 exe 目录（否则 data 落到 System32），支持 `HUOBEN_HOME` 覆盖
+- [x] 日志落盘 `data/logs/huoben-YYYY-MM-DD.log`，按天切分保留 14 天（服务无控制台，stdout 会丢）
 - [x] 优雅停机：StopPending → 取消 ctx → `http.Server.Shutdown` 最多 10s，避免 SQLite 停在 -wal 半写
 - [x] 非 Windows 平台 build tag 兜底，双平台编译通过；前台双击运行行为不变
-- [ ] 真机安装验证（需管理员 PowerShell：`jxc.exe -install` → `services.msc` 看服务 → 重启机器确认自启）——开发环境无管理员权限，留给发布演练一并做
+- [ ] 真机安装验证（需管理员 PowerShell：`huoben.exe -install` → `services.msc` 看服务 → 重启机器确认自启）——开发环境无管理员权限，留给发布演练一并做
 
 
 ## v0.22 HTTPS 反向代理（Caddy）✅（2026-11-05）
-- [x] 应用侧 `JXC_TRUSTED_PROXIES`（默认回环）：只信任代理下发的 `X-Forwarded-*`，操作日志取真实客户端 IP，外部不可伪造
+- [x] 应用侧 `HUOBEN_TRUSTED_PROXIES`（默认回环）：只信任代理下发的 `X-Forwarded-*`，操作日志取真实客户端 IP，外部不可伪造
 - [x] 显式 `SetTrustedProxies`：消除 Gin 默认信任全部代理的告警与风险，配置非法时回退回环
 - [x] `SecurityHeaders` 中间件：nosniff / SAMEORIGIN / Referrer-Policy；仅 HTTPS 请求下发 HSTS（HTTP 单机部署不被误锁）
 - [x] `deploy/Caddyfile`（域名自动证书 + gzip + API no-store + 日志滚动；附内网 `tls internal` 与 Nginx 复用 443 模板）
-- [x] `deploy/jxc.service` systemd 单元（自动重启 + 数据目录读写 + 基础加固）
+- [x] `deploy/huoben.service` systemd 单元（自动重启 + 数据目录读写 + 基础加固）
 - [x] README「HTTPS 部署」章节：拓扑、三种落地路径、环境变量、验收与故障排查
 - [ ] 内网无域名自签证书（`tls internal` + 客户端信任分发）——按客户 IT 环境决定，不主动开发
 
@@ -150,7 +155,7 @@
 - [x] 侧边栏菜单重组：基础档案 / 采购销售（采购+销售合并）/ 资金管理 / 库存作业 / 系统设置；报表中心提为一级菜单；「系统设置」菜单项更名「其他设置」
 - [x] 开单页底部显示本类型最近 8 张单据（点击定位 / 查看全部）；单据查询支持 doc_type、keyword URL 参数直达
 - [x] 静态资源缓存策略：/assets/* immutable 长缓存、index.html no-cache（修复升级后浏览器加载旧版前端）
-- [x] 浏览器标签标题「云进销存」、lang=zh-CN
+- [x] 浏览器标签标题「货本」、lang=zh-CN
 - [x] Bug 修复：路由复用组件数据残留（供应商/客户切换不刷新、8 类单据开单页切换残留表头与明细）
 
 ## M6 库位管理 ✅（2026-11-04，轻量版）
@@ -186,14 +191,14 @@
 
 ## M5 产品化 ✅
 - [x] License：机器码绑定 + Ed25519 签名 + 30 天试用 + 过期只读（5001）+ 设置页导入
-- [x] 签发工具 cmd/genlicense（私钥仅发布方保管）；jxc.exe -machine-code
-- [x] 单文件部署：前端 embed + SPA fallback + build.sh/build.bat → release/jxc.exe（约 29.6MB）
+- [x] 签发工具 cmd/genlicense（私钥仅发布方保管）；huoben.exe -machine-code
+- [x] 单文件部署：前端 embed + SPA fallback + build.sh/build.bat → release/huoben.exe（约 29.6MB）
 - [x] 多租户预留：全表 tenant_id + GORM TenantPlugin + TenantCtx（单机零行为变化）
-- [x] Windows 服务 / 开机自启（v0.23：`-install/-uninstall/-status`，Linux 用 deploy/jxc.service）
+- [x] Windows 服务 / 开机自启（v0.23：`-install/-uninstall/-status`，Linux 用 deploy/huoben.service）
 - [x] README.md 部署文档、测试数据清理
 
 ## 下一步候选（按需启动）
-- [ ] 正式发布演练：干净机器跑 release/jxc.exe + 签发真实客户授权 + 导入验证 + 管理员 PowerShell 验一遍 `-install` 与重启自启
+- [ ] 正式发布演练：干净机器跑 release/huoben.exe + 签发真实客户授权 + 导入验证 + 管理员 PowerShell 验一遍 `-install` 与重启自启
 
 > 已完成项（用户手册 v0.24、Windows 服务 v0.23、HTTPS/Caddy v0.22、打印模板 v0.21、批发模板 v0.20、SaaS 化 v0.19）见顶部对应版本章节，不再列入待办。
 

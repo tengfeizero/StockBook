@@ -21,9 +21,9 @@
 开源版本默认按「单机/局域网内部使用」设计，公网暴露前请逐条确认：
 
 1. **必须修改默认管理员密码**（`admin/admin123`），并删除或改密演示账号
-2. **必须设置 `JXC_JWT_SECRET`**，或确保 `data/.jwt_secret` 不被他人读取；多实例部署使用同一个值
-3. **HTTPS 用前置代理终结**：参考 [`deploy/Caddyfile`](deploy/Caddyfile)，jxc 只监听 `127.0.0.1`
-4. 反向代理部署时用 `JXC_TRUSTED_PROXIES` 限定可信代理，避免伪造 `X-Forwarded-For`
+2. **必须设置 `HUOBEN_JWT_SECRET`**，或确保 `data/.jwt_secret` 不被他人读取；多实例部署使用同一个值
+3. **HTTPS 用前置代理终结**：参考 [`deploy/Caddyfile`](deploy/Caddyfile)，huoben 只监听 `127.0.0.1`
+4. 反向代理部署时用 `HUOBEN_TRUSTED_PROXIES` 限定可信代理，避免伪造 `X-Forwarded-For`
 5. `data/` 目录仅服务账号可读（含数据库与授权文件），并纳入定期备份
 6. 公网部署请将租户注册入口按需关闭（`/api/v1/tenants/register` 为公开接口）
 

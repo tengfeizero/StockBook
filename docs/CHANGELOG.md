@@ -1,5 +1,13 @@
 # 变更日志
 
+## v0.27.0 — 2026-11-05（更名：云进销存 JXC → 货本 StockBook）
+- **产品更名**：`云进销存 / JXC` → **货本 StockBook**，一句话定位「一个 exe，一本货账」。取「一本账」之意，与云 SaaS 划清界限（数据在自己硬盘上、拷走即迁移），同时谐音「课本」呼应内置手册与新手引导
+- 更名对照：二进制 `jxc.exe` → `huoben.exe`；默认库 `data/jxc.db` → `data/huoben.db`；日志 `data/logs/jxc-*.log` → `huoben-*.log`；环境变量前缀 `JXC_` → `HUOBEN_`；Windows 服务名 `JXC` → `HUOBEN`（显示名「货本」）；Linux 单元 `deploy/jxc.service` → `deploy/huoben.service`（安装目录 `/opt/huoben`）；Docker 镜像/容器/数据卷 `jxc*` → `huoben*`；示例子域名 `jxc.example.com` → `huoben.example.com`；GORM 插件标识 `jxc:tenant*` → `huoben:tenant*`
+- **保留不动**：Go module 路径仍为 `jxc/server`（内部工程名，外部不可见，改它要全量替换 import，收益为零风险最高）；MIT 版权人改为 `StockBook contributors`
+- 文档同步：README 标题与定位语、`docs/用户手册.md`、AGENTS.md、项目现状、PRD、CONTRIBUTING、SECURITY、Caddyfile、CI、Docker、Makefile、`.env.example` 全部改新名；登录页与侧边栏品牌文案改为「货本」，登录页新增 tagline「一个 exe，一本货账」
+- 升级提示：已有部署需同步改环境变量前缀（`JXC_*` → `HUOBEN_*`）并重命名数据文件；若沿用旧变量名会静默回退默认值（例如把库指到 `data/huoben.db` 相当于新建空账套）
+- 实测：go vet/test、`vue-tsc -b`、build.sh 全通；`huoben.exe` 启动日志、登录、演示数据、`-status`、日志文件名均已是新名
+
 ## v0.26.0 — 2026-11-05（换机/换代理的冷启动保障）
 - 新增 **`AGENTS.md`**：面向任意 AI 编码代理（Claude Code / Cursor / Codex / WorkBuddy）的入口约定——必读顺序、环境与命令表、10 条不能破的规则（含 `go:embed` 编译期嵌入、service 层归属、金额分/数量×1000、`s.db(ctx)` 租户隔离、批量 Create 陷阱、唯一索引 tag）、禁区（不提交 data/license.key/.jwt_secret、不动授权公钥）、每轮迭代的收尾三件事、以及"已知未验证项"
 - 新增 **`docs/项目现状.md`**：仓库内的「当前状态」权威快照——版本与可交付状态、目录地图、10 条关键设计决策（为什么这么定）、9 条伪装成 bug 的坑、数据与密钥在哪 / 新机器怎么办、待办。替代此前只存在于本地 `.workbuddy/`（不入库）的迭代记忆
@@ -9,8 +17,8 @@
 - 实测：本机 `bash scripts/verify.sh` 全绿（go 1.27.3 / node 22.22.2）；另将仓库 clone 到空目录，从零 `npm ci` + 自检 + 构建 + 启动 + 登录 + 载入演示数据跑通，验证"换台机器拉下来即可迭代"
 
 ## v0.25.0 — 2026-11-05（开源准备）
-- **授权私钥移出代码**：`cmd/genlicense` 不再内置私钥，改为从环境变量 `JXC_LICENSE_KEY` 或 `-key-file` 读取；新增 `cmd/genkey` 生成密钥对；公钥已轮换（旧私钥随旧历史一并废弃，此前签发的 license.key 需用新钥重签）
-- **JWT 密钥加固**：未设置 `JXC_JWT_SECRET` 时自动生成 32 字节随机密钥并持久化到数据库同目录 `.jwt_secret`（0600），重启不掉登录态；多实例部署须显式设置同一环境变量
+- **授权私钥移出代码**：`cmd/genlicense` 不再内置私钥，改为从环境变量 `HUOBEN_LICENSE_KEY` 或 `-key-file` 读取；新增 `cmd/genkey` 生成密钥对；公钥已轮换（旧私钥随旧历史一并废弃，此前签发的 license.key 需用新钥重签）
+- **JWT 密钥加固**：未设置 `HUOBEN_JWT_SECRET` 时自动生成 32 字节随机密钥并持久化到数据库同目录 `.jwt_secret`（0600），重启不掉登录态；多实例部署须显式设置同一环境变量
 - **源码 clone 即可编译**：`webembed/webdist` 保留 `.gitkeep` 占位（构建脚本自动补回）；未构建前端时启动只提供 API，根路径返回指引页
 - **开源配套**：MIT `LICENSE`、`CONTRIBUTING.md`、`SECURITY.md`、`CODE_OF_CONDUCT.md`、GitHub issue 模板 ×3、PR 模板、CI（gofmt/vet/test + vue-tsc/build）、`Dockerfile`、`docker-compose.yml`、`.env.example`、`Makefile`
 - **README 开源化**：徽章、中英双语简介、功能总览、三种快速开始（源码/单文件/Docker）、架构与目录说明、自建授权密钥流程；`docs/images/` 新增 6 张界面截图（看板/库位/库存/小票/手册/登录）
@@ -26,22 +34,22 @@
 - 实测（headless Edge + puppeteer-core 截图）：引导 5 步气泡定位/遮罩/进度均正确，第 5 步气泡在小屏自动收进视口；手册页 11 章节渲染正常、目录联动；顶栏帮助菜单正常
 
 ## v0.23.0 — 2026-11-05（Windows 服务：开机自启、后台常驻）
-- 新增 `-install` / `-uninstall` / `-status` 三个命令行子命令：一条命令注册为开机自启的 Windows 服务（服务名 `JXC`，显示名「云进销存」），幂等重装（已存在则先停旧服务再建）；卸载只删服务、保留 data 账套
+- 新增 `-install` / `-uninstall` / `-status` 三个命令行子命令：一条命令注册为开机自启的 Windows 服务（服务名 `HUOBEN`，显示名「货本」），幂等重装（已存在则先停旧服务再建）；卸载只删服务、保留 data 账套
 - 崩溃自动重启：`SetRecoveryActions` 5s → 10s → 30s，一天无故障失败计数清零；并对「非崩溃式异常退出」同样生效
-- 服务模式启动时自动 `os.Chdir` 到 exe 所在目录：Windows 给服务的工作目录是 `System32`，否则 `data/jxc.db` 会跑到系统目录且无写权限；支持 `JXC_HOME` 覆盖数据根目录
-- 新增 `pkg/logfile` 按天切分日志（`data/logs/jxc-YYYY-MM-DD.log`，保留 14 天，启动时清理超期）：服务没有控制台，stdout 日志会全部丢失，必须落盘；单测覆盖写入与清理
+- 服务模式启动时自动 `os.Chdir` 到 exe 所在目录：Windows 给服务的工作目录是 `System32`，否则 `data/huoben.db` 会跑到系统目录且无写权限；支持 `HUOBEN_HOME` 覆盖数据根目录
+- 新增 `pkg/logfile` 按天切分日志（`data/logs/huoben-YYYY-MM-DD.log`，保留 14 天，启动时清理超期）：服务没有控制台，stdout 日志会全部丢失，必须落盘；单测覆盖写入与清理
 - `main.go` 拆为「前台 / 服务」双模式：前台保留双击运行（Ctrl+C、关窗口、kill 均触发优雅关闭）；服务模式由 SCM 托管，收到 Stop/Shutdown 先 StopPending 再取消 ctx，`http.Server.Shutdown` 最多等 10 秒，避免 SQLite 停在 `-wal` 半写状态
-- 非 Windows 平台编译由 `//go:build !windows` 占位实现兜底（子命令提示「Linux 请用 deploy/jxc.service」），Windows/Linux 双平台编译均通过
+- 非 Windows 平台编译由 `//go:build !windows` 占位实现兜底（子命令提示「Linux 请用 deploy/huoben.service」），Windows/Linux 双平台编译均通过
 - 启动失败不再直接 `log.Fatalf` 掉进程，改为返回错误由外层处理；端口被占用会明确提示「监听端口 8080 失败」
 - README 新增「注册为 Windows 服务」小节（含 `services.msc`、日志位置、改端口、不要放 Program Files、NSSM 应急方案）
 
 ## v0.22.0 — 2026-11-05（HTTPS：Caddy 反向代理部署）
 - 定位：**HTTPS 由前置代理终结，应用只讲 HTTP 且只监听回环地址**，不在二进制内做 TLS（内网自签证书需逐台客户端信任，维护成本高于收益，暂不做）
-- 应用侧新增 `JXC_TRUSTED_PROXIES`（默认 `127.0.0.1,::1`，逗号分隔 IP/CIDR，`none` 表示全不信任）：仅信任来自该列表的 `X-Forwarded-For/Proto`，操作日志记录真实客户端 IP，同时外部无法伪造来源 IP（实测：可信时记为 `203.0.113.9`，`none` 时记为 TCP 对端 `127.0.0.1`）
+- 应用侧新增 `HUOBEN_TRUSTED_PROXIES`（默认 `127.0.0.1,::1`，逗号分隔 IP/CIDR，`none` 表示全不信任）：仅信任来自该列表的 `X-Forwarded-For/Proto`，操作日志记录真实客户端 IP，同时外部无法伪造来源 IP（实测：可信时记为 `203.0.113.9`，`none` 时记为 TCP 对端 `127.0.0.1`）
 - 新增 `SecurityHeaders` 中间件：统一 `X-Content-Type-Options: nosniff`、`X-Frame-Options: SAMEORIGIN`、`Referrer-Policy: same-origin`；识别到 HTTPS（直连 TLS 或 `X-Forwarded-Proto: https`）才下发 HSTS `max-age=31536000`，避免单机 HTTP 部署被浏览器锁死在 HTTPS 上
 - 显式调用 `SetTrustedProxies`：消除 Gin 默认「信任所有代理」的告警与伪造风险；配置非法时回退为仅信任回环并打印提示
 - 新增 `deploy/Caddyfile`：域名自动证书（Let's Encrypt 自动申请续期）+ gzip/zstd + API `no-store` + 访问日志滚动；内含「内网 `tls internal` 自签」与「已有 Nginx 复用 443」两段注释模板
-- 新增 `deploy/jxc.service`：systemd 单元（环境变量、自动重启、`ReadWritePaths` 数据目录、`NoNewPrivileges` 等基础加固）
+- 新增 `deploy/huoben.service`：systemd 单元（环境变量、自动重启、`ReadWritePaths` 数据目录、`NoNewPrivileges` 等基础加固）
 - README 新增「HTTPS 部署（Caddy 反向代理）」章节：拓扑、域名/Windows/内网三种落地路径、环境变量表、验收命令与常见故障（证书申请失败、接口 404、日志全是 127.0.0.1、导入 413）
 - 启动日志增加代理信任来源与「对外请经 Caddy 走 HTTPS」提示
 
@@ -328,10 +336,10 @@
 ### 缓存策略修复（升级后浏览器加载旧版前端问题）
 - 根因：静态响应无 Cache-Control，浏览器启发式缓存旧 index.html
 - 修复：/assets/*（带 hash）`public, max-age=31536000, immutable`；index.html 与 SPA 路由 `no-cache`
-- 浏览器标签标题修正：「web」→「云进销存」，lang=zh-CN
+- 浏览器标签标题修正：「web」→「货本」，lang=zh-CN
 
 ### 部署提醒
-- jxc.exe 必须以工作目录含 data/ 的位置启动（DB 相对路径 data/jxc.db）
+- huoben.exe 必须以工作目录含 data/ 的位置启动（DB 相对路径 data/huoben.db）
 
 ## v0.9.0 — 2026-11-04（M6 库位管理：默认库位 + 开单带出 + 单据快照）
 
@@ -363,12 +371,12 @@
 - LicenseGuard 中间件：过期后**只读**——写操作返回 5001，读操作/登录/导入授权放行
 - 接口：GET /system/license（状态+机器码）、POST /system/license（上传 license.key 即时生效，机器码不符/签名无效被拒）
 - 前端：系统设置新增"授权信息"卡片（状态标签/到期日/机器码复制/导入授权）
-- `jxc.exe -machine-code` 打印机器码后退出
+- `huoben.exe -machine-code` 打印机器码后退出
 - 实测：trial 30 天 ✅ → 签发导入 licensed ✅ → 错误机器码拒绝 ✅ → 模拟过期 5001 拦截写/读放行 ✅ → 过期导入新授权即时恢复 ✅
 
 ### 单文件部署
 - `internal/webembed`：//go:embed 内嵌前端产物（web/dist → server/internal/webembed/webdist），SPA fallback（/print/:id 等前端路由回 index.html）、/api 404 JSON
-- 构建脚本 build.sh / build.bat：npm build → 拷贝嵌入 → go build -ldflags "-s -w" → release/jxc.exe（实测 29.5MB）
+- 构建脚本 build.sh / build.bat：npm build → 拷贝嵌入 → go build -ldflags "-s -w" → release/huoben.exe（实测 29.5MB）
 - README.md：功能总览、开发/部署双模式、授权售卖流程、多租户预留说明、备份安全
 
 ### 多租户基础设施（SaaS 预留，单机版零行为变化）

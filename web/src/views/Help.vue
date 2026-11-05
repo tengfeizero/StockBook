@@ -167,7 +167,7 @@ const sections: Section[] = [
         ],
       },
       {
-        tip: '以 Windows 服务方式运行时日志在 data/logs/jxc-YYYY-MM-DD.log，排查问题先看这里。',
+        tip: '以 Windows 服务方式运行时日志在 data/logs/huoben-YYYY-MM-DD.log，排查问题先看这里。',
       },
     ],
   },
@@ -177,7 +177,7 @@ const sections: Section[] = [
     items: [
       {
         h: '单机 / 私有部署',
-        p: '按机器码授权：运行 jxc.exe -machine-code 拿到机器码发给服务商，收到 license.key 后在「其他设置 → 授权信息」导入即生效。未授权可全功能试用 30 天，到期后只读（能查看和导出，不能改数据）。',
+        p: '按机器码授权：运行 huoben.exe -machine-code 拿到机器码发给服务商，收到 license.key 后在「其他设置 → 授权信息」导入即生效。未授权可全功能试用 30 天，到期后只读（能查看和导出，不能改数据）。',
       },
       {
         h: 'SaaS 订阅',
@@ -219,7 +219,7 @@ const sections: Section[] = [
       },
       {
         h: '能把系统放到云服务器上吗？',
-        p: '可以。跑 jxc.exe 或用 systemd 托管，前面用 Caddy 反向代理做 HTTPS，具体见 README 的「HTTPS 部署」章节。',
+        p: '可以。跑 huoben.exe 或用 systemd 托管，前面用 Caddy 反向代理做 HTTPS，具体见 README 的「HTTPS 部署」章节。',
       },
     ],
   },
@@ -288,7 +288,7 @@ onMounted(() => {
 
     <main ref="contentRef" class="content">
       <div class="head">
-        <h1>云进销存 · 使用手册</h1>
+        <h1>货本 · 使用手册</h1>
         <p>按「先建档案 → 再开单 → 最后对账」的顺序看，遇到问题直接搜下面的常见问题。</p>
       </div>
 

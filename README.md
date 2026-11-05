@@ -1,7 +1,9 @@
-# 云进销存 JXC
+# 货本 StockBook
+
+> 一个 exe，一本货账。
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Go](https://img.shields.io/badge/Go-1.22%2B-00ADD8?logo=go&logoColor=white)](server/go.mod)
+[![Go](https://img.shields.io/badge/Go-1.27%2B-00ADD8?logo=go&logoColor=white)](server/go.mod)
 [![Vue 3](https://img.shields.io/badge/Vue-3-42b883?logo=vue.js&logoColor=white)](web/package.json)
 [![Deploy](https://img.shields.io/badge/deploy-single%20binary-success)](build.sh)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -70,34 +72,34 @@ bash build.sh
 build.bat
 ```
 
-产物 `release/jxc.exe`（约 20–30 MB，已内嵌全部前端页面）。放到任意空目录双击运行，浏览器访问 <http://localhost:8080>。**换机迁移 = 拷贝整个目录**，数据在 `data/`。
+产物 `release/huoben.exe`（约 20–30 MB，已内嵌全部前端页面）。放到任意空目录双击运行，浏览器访问 <http://localhost:8080>。**换机迁移 = 拷贝整个目录**，数据在 `data/`。
 
 ### 方式三：Docker
 
 ```bash
-docker compose up -d          # 数据卷 jxc-data，仅监听 127.0.0.1:8080
+docker compose up -d          # 数据卷 huoben-data，仅监听 127.0.0.1:8080
 # 或
-docker build -t jxc . && docker run -d -p 8080:8080 -v jxc-data:/app/data jxc
+docker build -t huoben . && docker run -d -p 8080:8080 -v huoben-data:/app/data huoben
 ```
 
 ### 环境变量
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
-| `JXC_PORT` | `8080` | 监听端口 |
-| `JXC_DB_PATH` | `data/jxc.db` | SQLite 文件路径 |
-| `JXC_JWT_SECRET` | 自动生成 | 留空则在数据目录生成 `.jwt_secret`（0600）并复用；多实例必须显式设置同一个值 |
-| `JXC_TRUSTED_PROXIES` | `127.0.0.1,::1` | 信任的反向代理地址（IP/CIDR，逗号分隔），`none` = 不信任任何代理 |
-| `JXC_HOME` | exe 所在目录 | Windows 服务模式下的数据根目录 |
+| `HUOBEN_PORT` | `8080` | 监听端口 |
+| `HUOBEN_DB_PATH` | `data/huoben.db` | SQLite 文件路径 |
+| `HUOBEN_JWT_SECRET` | 自动生成 | 留空则在数据目录生成 `.jwt_secret`（0600）并复用；多实例必须显式设置同一个值 |
+| `HUOBEN_TRUSTED_PROXIES` | `127.0.0.1,::1` | 信任的反向代理地址（IP/CIDR，逗号分隔），`none` = 不信任任何代理 |
+| `HUOBEN_HOME` | exe 所在目录 | Windows 服务模式下的数据根目录 |
 
 ## 新机器接手（换电脑 / 换 AI 代理）
 
 clone 下来用**一条命令**确认基线是否可用：
 
 ```bash
-git clone <repo> && cd JXC
+git clone <repo> && cd HUOBEN
 bash scripts/verify.sh          # 工具链 → 依赖(自动 npm ci) → gofmt → vet → test → vue-tsc
-bash scripts/verify.sh --build  # 再加一步：完整构建 release/jxc.exe
+bash scripts/verify.sh --build  # 再加一步：完整构建 release/huoben.exe
 ```
 
 - **给 AI 编码代理**：先读 [AGENTS.md](AGENTS.md)。里面有硬规则（业务只写 service 层、金额用分、`go:embed` 改了要重编译、多租户必须带 ctx）、不能碰的禁区、以及每轮迭代的收尾清单。
@@ -122,27 +124,27 @@ bash scripts/verify.sh --build  # 再加一步：完整构建 release/jxc.exe
 **Windows 开机自启**（管理员 CMD，exe 所在目录）：
 
 ```bat
-jxc.exe -install     :: 注册服务并启动（幂等，升级后重跑即可）
-jxc.exe -status      :: 运行状态 / 程序路径 / 启动类型
-jxc.exe -uninstall   :: 停止并卸载，data 目录保留
+huoben.exe -install     :: 注册服务并启动（幂等，升级后重跑即可）
+huoben.exe -status      :: 运行状态 / 程序路径 / 启动类型
+huoben.exe -uninstall   :: 停止并卸载，data 目录保留
 ```
 
-服务名 `JXC`，崩溃按 5s→10s→30s 自动重启，日志写 `data/logs/jxc-YYYY-MM-DD.log`（保留 14 天）。服务方式下 Windows 给的工作目录是 `System32`，程序会自动切回 exe 目录，数据不会跑丢。
+服务名 `HUOBEN`，崩溃按 5s→10s→30s 自动重启，日志写 `data/logs/huoben-YYYY-MM-DD.log`（保留 14 天）。服务方式下 Windows 给的工作目录是 `System32`，程序会自动切回 exe 目录，数据不会跑丢。
 
 **公网 / HTTPS**：不要直接暴露 8080。用 Caddy 终结 TLS，应用只监听回环：
 
 ```
-浏览器 ──HTTPS(443)──▶ Caddy ──HTTP(127.0.0.1:8080)──▶ jxc
+浏览器 ──HTTPS(443)──▶ Caddy ──HTTP(127.0.0.1:8080)──▶ huoben
 ```
 
-改一行域名即可自动申请续期证书，配置见 [`deploy/Caddyfile`](deploy/Caddyfile)；Linux systemd 单元见 [`deploy/jxc.service`](deploy/jxc.service)。详细步骤（含内网自签、常见故障排查）见 [用户手册](docs/用户手册.md)。
+改一行域名即可自动申请续期证书，配置见 [`deploy/Caddyfile`](deploy/Caddyfile)；Linux systemd 单元见 [`deploy/huoben.service`](deploy/huoben.service)。详细步骤（含内网自签、常见故障排查）见 [用户手册](docs/用户手册.md)。
 
-**数据安全**：每天首次启动自动 `VACUUM INTO` 备份到 `data/backups/`；登录与所有数据变更写操作日志（密码脱敏）。公网部署前请务必修改默认密码、设置 `JXC_JWT_SECRET`，并阅读 [SECURITY.md](SECURITY.md)。
+**数据安全**：每天首次启动自动 `VACUUM INTO` 备份到 `data/backups/`；登录与所有数据变更写操作日志（密码脱敏）。公网部署前请务必修改默认密码、设置 `HUOBEN_JWT_SECRET`，并阅读 [SECURITY.md](SECURITY.md)。
 
 ## 架构
 
 ```
-JXC/
+HUOBEN/
 ├── server/                     Go + Gin + GORM
 │   ├── cmd/main.go             入口：前台/Windows 服务双模式、路由装配
 │   ├── cmd/genlicense          授权签发（私钥从环境变量读）
@@ -176,7 +178,7 @@ cd server && go run ./cmd/genkey
 #    PRIVATE_KEY → 只保存在自己手里
 
 # 2. 签发（私钥经环境变量传入，不落代码）
-export JXC_LICENSE_KEY='<PRIVATE_KEY>'
+export HUOBEN_LICENSE_KEY='<PRIVATE_KEY>'
 go run ./cmd/genlicense -owner "某某商贸" -days 365 -code XXXX-XXXX-XXXX-XXXX -out license.key
 ```
 

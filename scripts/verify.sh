@@ -112,7 +112,7 @@ fi
 if [ "$DO_BUILD" = "1" ]; then
   step "附加：完整构建 build.sh"
   if BUILD_OUT="$(bash build.sh 2>&1)"; then
-    ok "构建成功：release/jxc.exe $(ls -lh release/jxc.exe 2>/dev/null | awk '{print $5}')"
+    ok "构建成功：release/huoben.exe $(ls -lh release/huoben.exe 2>/dev/null | awk '{print $5}')"
   else
     bad "构建失败："; echo "$BUILD_OUT" | indent
   fi

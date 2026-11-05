@@ -17,7 +17,7 @@ type Daily struct {
 	file *os.File
 }
 
-// NewDaily 在 dir 下创建/追加当天的 jxc-YYYY-MM-DD.log，keepDays<=0 表示不清理。
+// NewDaily 在 dir 下创建/追加当天的 huoben-YYYY-MM-DD.log，keepDays<=0 表示不清理。
 func NewDaily(dir string, keepDays int) (*Daily, error) {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (d *Daily) open() (*os.File, error) {
 		_ = d.file.Close()
 		d.file = nil
 	}
-	f, err := os.OpenFile(filepath.Join(d.dir, "jxc-"+day+".log"),
+	f, err := os.OpenFile(filepath.Join(d.dir, "huoben-"+day+".log"),
 		os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o644)
 	if err != nil {
 		return nil, err
@@ -83,10 +83,10 @@ func (d *Daily) prune(keepDays int) {
 	cutoff := time.Now().AddDate(0, 0, -keepDays)
 	for _, e := range entries {
 		name := e.Name()
-		if e.IsDir() || !strings.HasPrefix(name, "jxc-") || !strings.HasSuffix(name, ".log") {
+		if e.IsDir() || !strings.HasPrefix(name, "huoben-") || !strings.HasSuffix(name, ".log") {
 			continue
 		}
-		day, err := time.Parse("2006-01-02", strings.TrimSuffix(strings.TrimPrefix(name, "jxc-"), ".log"))
+		day, err := time.Parse("2006-01-02", strings.TrimSuffix(strings.TrimPrefix(name, "huoben-"), ".log"))
 		if err != nil {
 			continue
 		}
@@ -100,5 +100,5 @@ func (d *Daily) prune(keepDays int) {
 func (d *Daily) String() string {
 	d.mu.Lock()
 	defer d.mu.Unlock()
-	return filepath.Join(d.dir, "jxc-"+d.day+".log")
+	return filepath.Join(d.dir, "huoben-"+d.day+".log")
 }

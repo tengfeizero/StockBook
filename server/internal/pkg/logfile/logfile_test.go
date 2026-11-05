@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// 当天文件应被创建，写入内容可读回，跨天命名符合 jxc-YYYY-MM-DD.log
+// 当天文件应被创建，写入内容可读回，跨天命名符合 huoben-YYYY-MM-DD.log
 func TestDailyWrite(t *testing.T) {
 	dir := t.TempDir()
 	d, err := NewDaily(dir, 14)
@@ -21,7 +21,7 @@ func TestDailyWrite(t *testing.T) {
 		t.Fatalf("Write: %v", err)
 	}
 
-	name := filepath.Join(dir, "jxc-"+time.Now().Format("2006-01-02")+".log")
+	name := filepath.Join(dir, "huoben-"+time.Now().Format("2006-01-02")+".log")
 	raw, err := os.ReadFile(name)
 	if err != nil {
 		t.Fatalf("读取当天日志失败: %v", err)
@@ -37,8 +37,8 @@ func TestDailyWrite(t *testing.T) {
 // 超过保留天数的历史日志在启动时清理，保留期内的不动
 func TestDailyPrune(t *testing.T) {
 	dir := t.TempDir()
-	old := filepath.Join(dir, "jxc-2020-01-01.log")
-	recent := filepath.Join(dir, "jxc-"+time.Now().AddDate(0, 0, -2).Format("2006-01-02")+".log")
+	old := filepath.Join(dir, "huoben-2020-01-01.log")
+	recent := filepath.Join(dir, "huoben-"+time.Now().AddDate(0, 0, -2).Format("2006-01-02")+".log")
 	for _, p := range []string{old, recent} {
 		if err := os.WriteFile(p, []byte("x"), 0o644); err != nil {
 			t.Fatalf("准备文件失败: %v", err)

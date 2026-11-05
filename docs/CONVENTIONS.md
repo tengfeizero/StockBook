@@ -5,7 +5,7 @@
 ## 目录结构（固定）
 
 ```
-JXC/
+HUOBEN/
 ├── docs/                    # PRD / DATA-MODEL / CONVENTIONS / API / CHANGELOG / TODO
 ├── server/                  # Go 后端
 │   ├── cmd/main.go          # 入口
@@ -18,7 +18,7 @@ JXC/
 │   │   ├── middleware/      # JWT、审计日志、CORS
 │   │   └── pkg/             # 错误码、单号生成、分页等工具
 │   ├── tests/
-│   ├── data/jxc.db          # SQLite 文件（gitignore）
+│   ├── data/huoben.db          # SQLite 文件（gitignore）
 │   ├── go.mod
 │   └── .env.example
 └── web/                     # Vue3 前端

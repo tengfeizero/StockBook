@@ -88,7 +88,7 @@ func report(msg string, err error) {
 
 // setupServiceRuntime 服务模式的三件套：切换工作目录、日志落盘、关掉 gin 的路由清单输出。
 func setupServiceRuntime() (*logfile.Daily, error) {
-	home := os.Getenv("JXC_HOME")
+	home := os.Getenv("HUOBEN_HOME")
 	if home == "" {
 		exe, err := os.Executable()
 		if err != nil {
@@ -317,7 +317,7 @@ func runApp(ctx context.Context) error {
 		// 接口照常可用，根路径给出提示，避免误以为服务坏了
 		log.Printf("提示: 未检测到前端构建产物，仅提供 API。开发请用 `cd web && npm run dev`，生产请执行 build.sh / build.bat")
 		r.GET("/", func(c *gin.Context) {
-			c.String(http.StatusOK, "JXC 服务已启动（前端未构建）。\n\n开发：cd web && npm install && npm run dev，访问 http://localhost:5173\n发布：项目根目录执行 build.sh（Linux/macOS）或 build.bat（Windows）\n")
+			c.String(http.StatusOK, "HUOBEN 服务已启动（前端未构建）。\n\n开发：cd web && npm install && npm run dev，访问 http://localhost:5173\n发布：项目根目录执行 build.sh（Linux/macOS）或 build.bat（Windows）\n")
 		})
 	} else {
 		fileServer := http.StripPrefix("/", http.FileServer(http.FS(sub)))
@@ -341,7 +341,7 @@ func runApp(ctx context.Context) error {
 	}
 
 	if len(cfg.TrustedProxies) == 0 {
-		log.Printf("反向代理：未信任任何代理（JXC_TRUSTED_PROXIES=none），客户端 IP 取 TCP 对端")
+		log.Printf("反向代理：未信任任何代理（HUOBEN_TRUSTED_PROXIES=none），客户端 IP 取 TCP 对端")
 	} else {
 		log.Printf("反向代理：信任来源 %v（Caddy/Nginx 同机部署用默认值即可）", cfg.TrustedProxies)
 	}

@@ -6,8 +6,8 @@
 ## 这是什么
 
 单店/单仓小微商户的进销存系统。**Go 1.27 + Gin + GORM + SQLite** 后端 + **Vue 3 + TS + Element Plus** 前端，
-构建时前端经 `go:embed` 打进二进制，产物是单个 `jxc.exe`，数据在 exe 同目录 `data/`。
-当前 v0.26，功能完整、可交付；同时支持多租户 SaaS 模式（0 号租户 = 单机版）。
+构建时前端经 `go:embed` 打进二进制，产物是单个 `huoben.exe`，数据在 exe 同目录 `data/`。
+当前 v0.27，功能完整、可交付；同时支持多租户 SaaS 模式（0 号租户 = 单机版）。
 
 ## 开工前 5 分钟（按顺序，别跳）
 
@@ -27,9 +27,9 @@
 | 起后端 :8080 | `cd server && go run ./cmd` |
 | 起前端 :5173（热更新，/api 代理到 8080） | `cd web && npm run dev` |
 | 提交前自检（**必跑**） | `bash scripts/verify.sh` |
-| 构建单文件产物 | `bash build.sh` → `release/jxc.exe` |
+| 构建单文件产物 | `bash build.sh` → `release/huoben.exe` |
 | 只跑后端测试 | `cd server && go test ./...` |
-| 重置为全新库 | 停服务 → 删 `data/jxc.db*` → 重启（自动建表 + `admin/admin123`） |
+| 重置为全新库 | 停服务 → 删 `data/huoben.db*` → 重启（自动建表 + `admin/admin123`） |
 | 装行业演示数据 | `POST /api/v1/demo/init`，body `{"confirm":"RESET","template":"hardware\|convenience\|fresh\|wholesale"}` |
 
 `data/` 一律不入库。**不要为了"跑通"去改 `data/` 里的东西再提交**。
@@ -51,9 +51,9 @@
 
 - 不提交：`data/`、`*.db`、`license.key`、`.jwt_secret`、`release/`、`node_modules/`、`.workbuddy/`、`*.log`（`.gitignore` 已覆盖，但**不要 `git add -A` 盲提**）。
 - 不改 `server/internal/pkg/license/license.go` 的 `PublicKey`，除非你同时持有私钥并重签所有授权；改错了所有人授权立即失效。
-- 不硬编码任何密钥/口令/私钥。授权私钥只经环境变量 `JXC_LICENSE_KEY` 或 `-key-file` 传入，**永远不落代码、不落仓库**。
+- 不硬编码任何密钥/口令/私钥。授权私钥只经环境变量 `HUOBEN_LICENSE_KEY` 或 `-key-file` 传入，**永远不落代码、不落仓库**。
 - 不动 `docs/` 里已定稿的历史章节（PRD 的里程碑、CHANGELOG 的旧版本），只在顶部追加新版本。
-- 生产环境的 `data/` 目录不要拿来做测试（会真删数据）。测试用 `JXC_PORT` + `JXC_DB_PATH` 指向临时目录。
+- 生产环境的 `data/` 目录不要拿来做测试（会真删数据）。测试用 `HUOBEN_PORT` + `HUOBEN_DB_PATH` 指向临时目录。
 
 ## 交付节奏（每轮迭代）
 
@@ -74,7 +74,7 @@
 
 ## 已知未验证项（别当成已完成）
 
-- Windows 服务 `jxc.exe -install` 的**真机安装**（`services.msc` 可见 + 重启自启）：开发环境无管理员权限，只验证到"非管理员明确报错"。
+- Windows 服务 `huoben.exe -install` 的**真机安装**（`services.msc` 可见 + 重启自启）：开发环境无管理员权限，只验证到"非管理员明确报错"。
 - Caddy 的**真实证书签发**：本机无公网域名，只验证了应用侧 `X-Forwarded-Proto` → HSTS 与真实 IP 透传。
 
 动这两块之前先看 `docs/TODO.md` 里对应条目的原始描述。
